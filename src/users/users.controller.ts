@@ -7,6 +7,10 @@ import {
   Param,
   Headers,
   UseGuards,
+  Inject,
+  Logger,
+  LoggerService,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import {
   CreateUserDto,
@@ -23,12 +27,26 @@ export class UsersController {
   constructor(
     private usersService: UsersService,
     private authService: AuthService,
+    @Inject(Logger) private readonly logger: LoggerService,
   ) {}
 
   @Post()
   async createUser(@Body() dto: CreateUserDto): Promise<void> {
+    this.printLoggerServiceLog(dto);
     const { name, email, password } = dto;
     await this.usersService.createUser(name, email, password);
+  }
+
+  private printLoggerServiceLog(dto) {
+    try {
+      throw new InternalServerErrorException('test');
+    } catch (e) {
+      this.logger.error('error: ' + JSON.stringify(dto), e.stack);
+    }
+    this.logger.warn('warn: ' + JSON.stringify(dto));
+    this.logger.log('log: ' + JSON.stringify(dto));
+    this.logger.verbose('verbose: ' + JSON.stringify(dto));
+    this.logger.debug('debug: ' + JSON.stringify(dto));
   }
 
   @Post('/email-verify')
