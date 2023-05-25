@@ -6,6 +6,7 @@ import emailConfig from './config/emailConfig';
 import { validationSchema } from './config/validationSchema';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import authConfig from './config/authConfig';
+import { ExceptionModule } from './exception/exception.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import authConfig from './config/authConfig';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: process.env.DATABASE_SYNCHRONIZE === 'true',
     }),
+    ExceptionModule,
   ],
   controllers: [AppController],
   providers: [],
