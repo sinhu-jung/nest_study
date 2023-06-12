@@ -7,6 +7,8 @@ import { validationSchema } from './config/validationSchema';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import authConfig from './config/authConfig';
 import { ExceptionModule } from './exception/exception.module';
+import { LoggingModule } from './logging/logging.module';
+import { BatchModule } from './batch/batch.module';
 
 @Module({
   imports: [
@@ -28,6 +30,8 @@ import { ExceptionModule } from './exception/exception.module';
       synchronize: process.env.DATABASE_SYNCHRONIZE === 'true',
     }),
     ExceptionModule,
+    LoggingModule,
+    BatchModule,
   ],
   controllers: [AppController],
   providers: [],
