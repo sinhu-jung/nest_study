@@ -2,24 +2,21 @@ import { NotFoundException } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserEntity } from '../entity/user.entity';
+import { UserEntity } from '../../infra/db/entity/user.entity';
+import { UserInfo } from '../../interface/UserInfo';
 import { GetUserInfoQuery } from './get-user-info.query';
-import { UserInfo } from '../users.dto';
 
 @QueryHandler(GetUserInfoQuery)
-export class GetUserInfoQueryHandler
-  implements IQueryHandler<GetUserInfoQuery>
-{
+export class GetUserInfoQueryHandler implements IQueryHandler<GetUserInfoQuery> {
   constructor(
-    @InjectRepository(UserEntity)
-    private usersRepository: Repository<UserEntity>,
-  ) {}
+    @InjectRepository(UserEntity) private usersRepository: Repository<UserEntity>,
+  ) { }
 
   async execute(query: GetUserInfoQuery): Promise<UserInfo> {
     const { userId } = query;
 
     const user = await this.usersRepository.findOne({
-      where: { id: userId },
+      where: { id: userId }
     });
 
     if (!user) {

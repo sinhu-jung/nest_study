@@ -1,27 +1,14 @@
-import {
-  Controller,
-  Post,
-  Body,
-  Query,
-  Get,
-  Param,
-  UseGuards,
-  Inject,
-  Logger,
-  LoggerService,
-} from '@nestjs/common';
-import {
-  CreateUserDto,
-  UserInfo,
-  UserLoginDto,
-  VerifyEmailDto,
-} from './users.dto';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { Body, Controller, Get, Param, Post, Query, UseGuards, Inject, LoggerService, InternalServerErrorException, Logger } from '@nestjs/common';
 import { AuthGuard } from 'src/auth.guard';
-import { CreateUserCommand } from './command/create-user.command';
-import { VerifyEmailCommand } from './command/verify-email.command';
-import { LoginCommand } from './command/login.command';
-import { GetUserInfoQuery } from './query/get-user-info.query';
+import { UserInfo } from './UserInfo';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { CreateUserCommand } from '../application/command/create-user.command';
+import { LoginCommand } from '../application/command/login.command';
+import { VerifyEmailCommand } from '../application/command/verify-email.command';
+import { GetUserInfoQuery } from '../application/query/get-user-info.query';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UserLoginDto } from './dto/user-login.dto';
+import { VerifyEmailDto } from './dto/verify-email.dto';
 
 @Controller('users')
 export class UsersController {
@@ -29,7 +16,7 @@ export class UsersController {
     private commandBus: CommandBus,
     private queryBus: QueryBus,
     @Inject(Logger) private readonly logger: LoggerService,
-  ) {}
+  ) { }
 
   @Post()
   async createUser(@Body() dto: CreateUserDto): Promise<void> {
