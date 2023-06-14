@@ -5,7 +5,7 @@ import { User } from './user';
 
 @Injectable()
 export class UserFactory {
-  constructor(private eventBus: EventBus) { }
+  constructor(private eventBus: EventBus) {}
 
   create(
     id: string,
